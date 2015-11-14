@@ -1,0 +1,49 @@
+﻿
+{% extends "base.html" %}
+
+{% block title %}图书管理系统更新1.11版本{% endblock %}
+
+{% block heading %} 
+<h1> 更新了列表显示内容 </h1>
+<h2> 记录列表 </h2>
+
+{% if error %}
+	<p style="color: red;">搜索内容不能为空!</p>
+{% endif %}
+<form action="/bookapp/book/search/" method="get">
+	<input type="text" name="q">
+	<input type="submit" value="搜索">
+</form>
+
+{% endblock %}
+{% block content %} 
+
+<table>
+
+<thead>
+<tr><th>书名</th><th colspan="0">操作</th></tr>
+{% for item in list_items.object_list %}
+  <tr><td>  {{item}}</td> 
+  <td><a href="{% url bookapp.views.view_book item.ISBN %}">详情</a></td> 
+  <td><a href="{% url bookapp.views.edit_book item.ISBN %}">编辑</a></td> 
+  <td><a href="{% url bookapp.views.delete_book item.ISBN %}">删除</a></td> 
+  </tr>
+{% endfor %}
+<tr><td colspan="3"> <a href="{% url bookapp.views.create_book %}">添加</a></td></tr>
+</table>
+
+<div align="center">
+{% if list_items.has_previous %}
+    <a href="?page={{ list_items.previous_page_number }}">上页</a>
+{% endif %}
+
+<span class="current">
+    Page {{ list_items.number }} of {{ list_items.paginator.num_pages }}.
+</span>
+
+{% if list_items.has_next %}
+        <a href="?page={{ list_items.next_page_number }}">下页</a>
+{% endif %}
+
+</div>
+{% endblock %}

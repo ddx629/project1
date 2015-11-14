@@ -1,0 +1,40 @@
+﻿
+{% extends "base.html" %}
+
+{% block title %}图书管理系统{% endblock %}
+
+{% block heading %} 
+<h1> 图书 </h1>
+<h2> 记录列表 </h2>
+
+{% if error %}
+	<p style="color: red;">搜索内容不能为空!</p>
+{% endif %}
+<form action="/bookapp/book/search/" method="get">
+	<input type="text" name="q">
+	<input type="submit" value="搜索">
+</form>
+
+{% endblock %}
+{% block content %} 
+
+<table>
+
+<thead>
+{% if books %}
+<tr><th>书名</th><th colspan="0">操作</th></tr>
+{% for book in books %}	
+  <tr><td>  {{book}}</td> 
+  <td><a href="{% url bookapp.views.view_book book.ISBN %}">详情</a></td> 
+  <td><a href="{% url bookapp.views.edit_book book.ISBN %}">编辑</a></td> 
+  <td><a href="{% url bookapp.views.delete_book book.ISBN %}">删除</a></td> 
+  </tr>
+{% endfor %}
+{% else %}
+<p style="color: red;">没有搜索结果</p>
+{% endif %}
+<td><a href="{% url bookapp.views.list_book%}">返回</a></td> 
+</table>
+
+</div>
+{% endblock %}
